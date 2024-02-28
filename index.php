@@ -39,14 +39,15 @@ include("db.php");
         }
 
         #clubsTable {
+
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
         #clubsTable th, #clubsTable td {
-            padding: 13px;
-            text-align: left;
+            padding: 10px;
+            text-align: center;
             border-bottom: 2px solid #ddd;
         }
 
@@ -62,6 +63,26 @@ include("db.php");
         #clubsTable tbody tr:hover {
             background-color: #cce5ff;
         }
+
+		.custom-dropdown {
+            width: 120px;
+            padding: 1px;
+			align-items: center;
+			justify-content: center;
+            border-radius: 7px;
+            background-color: #3498db;
+            color: white;
+			margin: 0 auto;
+        }
+
+        .custom-dropdown select {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 3px;
+            background-color: #3498db;
+            color: white;
+        }
 		
     </style>
 </head>
@@ -76,7 +97,7 @@ include("db.php");
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
-				<a href="#">
+				<a href="index.php">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Club List</span>
 				</a>
@@ -90,7 +111,7 @@ include("db.php");
 			<li>
 				<a href="clubofficials.php">
 					<i class='bx bxs-dashboard' ></i>
-					<span class="text">Club Officials</span>
+					<span class="text">Club Officers</span>
 				</a>
 			</li>
 			<li>
@@ -125,6 +146,7 @@ include("db.php");
 
 
 	<!-- CONTENT -->
+
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
@@ -141,42 +163,68 @@ include("db.php");
 		<!-- NAVBAR -->
 
 		<!-- MAIN -->
-		<main>
-	
-            <div class="container">
-        <h2 style="text-align: center; color: #333;">Clubs List</h2>
-        <table id="clubsTable" class="table table-striped table-bordered" style="width: 100%">
-            <thead>
-                <tr>
-                    <th>Club ID</th>
-                    <th>Club Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $sql = "SELECT ClubID, ClubName FROM clubs";
-
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<tr>
-                                <td>' . $row["ClubID"] . '</td>
-                                <td>' . $row["ClubName"] . '</td>
-                              </tr>';
+		<<main>
+        <div class="container">
+            <h2 style="text-align: center; color: #3498db;">Clubs List</h2>
+            <table id="clubsTable" class="table table-striped table-bordered" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Club Pictures</th>
+                        <th>Club Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql = "SELECT ClubPicture, ClubName, Status FROM clubs"; // Assuming ClubPicture is the column name for pictures
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<tr>
+                                    <td>
+                                        <img src="' . $row["ClubPicture"] . '" alt="Club Picture" style="max-width: 100px; max-height: 100px;">
+                                    </td>
+                                    <td>' . $row["ClubName"] . '</td>
+                                    <td>
+                                        <div class="custom-dropdown">
+                                            <select>
+                                                <option value="accredited" ' . ($row["Status"] == "accredited" ? "selected" : "") . '>Accredited</option>
+                                                <option value="not_accredited" ' . ($row["Status"] == "not_accredited" ? "selected" : "") . '>Not Accredited</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>';
+                        }
+                    } else {
+                        echo '<tr><td colspan="3" style="text-align: center;">No data available</td></tr>';
                     }
-                } else {
-                    echo '<tr><td colspan="2" style="text-align: center;">No data available</td></tr>';
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $('#clubsTable').DataTable();
-        });
-    </script>
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#clubsTable').DataTable();
+            });
+        </script>
+    </main>
+
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+    <label for="clubSelect">Select Club:</label>
+    <select name="clubSelect" id="clubSelect">
+        <?php
+        $clubSql = "SELECT ClubID, ClubName FROM clubs";
+        $clubResult = $conn->query($clubSql);
+        while ($clubRow = $clubResult->fetch_assoc()) {
+            echo '<option value="' . $clubRow["ClubID"] . '">' . $clubRow["ClubName"] . '</option>';
+        }
+        ?>
+    </select>
+    <br>
+    <label for="clubPicture">Upload Club Picture:</label>
+    <input type="file" name="clubPicture" id="clubPicture">
+    <input type="submit" value="Upload" name="submit">
+</form>
             
 
 		</main>

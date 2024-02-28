@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<li>
 				<a href="clubofficials.php">
 					<i class='bx bxs-dashboard' ></i>
-					<span class="text">Club Officials</span>
+					<span class="text">Club Officers</span>
 				</a>
 			</li>
 			<li>

@@ -92,7 +92,7 @@ include("db.php");
             <li>
                 <a href="clubofficials.php">
                     <i class='bx bxs-dashboard'></i>
-                    <span class="text">Club Officials</span>
+                    <span class="text">Club Officers</span>
                 </a>
             </li>
             <li>
@@ -144,7 +144,7 @@ include("db.php");
         <!-- MAIN -->
         <main class="main-content">
             <div class="container">
-                <h2>Club Members Information</h2>
+                <h2 style="text-align: center; color: #3498db;" >Club Members Information</h2>
                 <table id="exampleTable" class="table table-striped table-bordered">
                     <thead id="thead">
                         <tr>
