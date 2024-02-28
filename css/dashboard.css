@@ -1,0 +1,47 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+    background-color: #E8E4C9;
+}
+
+.container {
+    margin-top: 1px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    h2 {
+    text-align: center;
+    color: #3498db; /* Header color */
+}
+
+#clubsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    }
+
+        #clubsTable th, #clubsTable td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+
+        #clubsTable th {
+            background-color: #3498db; /* Header background color */
+            color: white;
+        }
+
+        #clubsTable tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        #clubsTable tbody tr:hover {
+            background-color: #cce5ff;
+        }
