@@ -208,26 +208,6 @@ include("db.php");
             });
         </script>
     </main>
-
-    <form action="upload.php" method="post" enctype="multipart/form-data">
-    <label for="clubSelect">Select Club:</label>
-    <select name="clubSelect" id="clubSelect">
-        <?php
-        $clubSql = "SELECT ClubID, ClubName FROM clubs";
-        $clubResult = $conn->query($clubSql);
-        while ($clubRow = $clubResult->fetch_assoc()) {
-            echo '<option value="' . $clubRow["ClubID"] . '">' . $clubRow["ClubName"] . '</option>';
-        }
-        ?>
-    </select>
-    <br>
-    <label for="clubPicture">Upload Club Picture:</label>
-    <input type="file" name="clubPicture" id="clubPicture">
-    <input type="submit" value="Upload" name="submit">
-</form>
-            
-
-		</main>
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
