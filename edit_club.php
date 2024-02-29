@@ -1,73 +1,77 @@
-<!-- edit_club.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ... your existing head content ... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Club</title>
+    <style>
+        /* Add your styling if needed */
+    </style>
 </head>
 <body>
 
 <?php
+// Your database connection code here
 include("db.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editClub'])) {
     $clubID = $_POST['clubID'];
 
-    // Handle image upload logic
-    if (isset($_FILES['newClubLogo']) && $_FILES['newClubLogo']['error'] === UPLOAD_ERR_OK) {
-        $targetDir = "uploads/";
-        $targetFile = $targetDir . basename($_FILES["newClubLogo"]["name"]);
-        move_uploaded_file($_FILES["newClubLogo"]["tmp_name"], $targetFile);
+    // Retrieve club details for pre-filling the form
+    $query = "SELECT * FROM clubs WHERE ClubID = $clubID";
+    $result = mysqli_query($conn, $query);
 
-        // Update ClubLogo in the database
-        $updateLogoQuery = "UPDATE clubs SET ClubLogo = '$targetFile' WHERE ClubID = $clubID";
+    if ($result && mysqli_num_rows($result) > 0) {
+        $clubData = mysqli_fetch_assoc($result);
+    } else {
+        echo "Club not found.";
+        exit();
+    }
+    ?>
+
+    <form method='post' action='' enctype='multipart/form-data'>
+        <input type='hidden' name='clubID' value='<?php echo $clubID; ?>'>
+        <label for='clubLogo'>Club Logo:</label>
+        <input type='file' name='clubLogo' accept='image/*'>
+        <img src='<?php echo $clubData['ClubLogo']; ?>' alt='Club Logo' style='max-width: 50px; max-height: 50px;'>
+        <br>
+        <label for='newClubName'>New Club Name:</label>
+        <input type='text' name='newClubName' value='<?php echo $clubData['ClubName']; ?>' placeholder='New Club Name'>
+        <br>
+        <button type='submit' name='updateClub'>Update Club</button>
+    </form>
+
+    <?php
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateClub'])) {
+    $clubID = $_POST['clubID'];
+
+    // Check if an image is uploaded
+    if ($_FILES['clubLogo']['error'] == UPLOAD_ERR_OK) {
+        $uploadDir = 'uploads/';  // Specify the directory where you want to store the uploaded images
+        $uploadFile = $uploadDir . basename($_FILES['clubLogo']['name']);
+
+        // Move the uploaded file to the specified directory
+        move_uploaded_file($_FILES['clubLogo']['tmp_name'], $uploadFile);
+
+        // Update the ClubLogo in the database
+        $updateLogoQuery = "UPDATE clubs SET ClubLogo = '$uploadFile' WHERE ClubID = $clubID";
         mysqli_query($conn, $updateLogoQuery);
     }
 
-    // Handle ClubName update logic
-    if (isset($_POST['newClubName'])) {
-        $newClubName = $_POST['newClubName'];
-        $updateNameQuery = "UPDATE clubs SET ClubName = '$newClubName' WHERE ClubID = $clubID";
-        mysqli_query($conn, $updateNameQuery);
-    }
+    // Update the ClubName in the database
+    $newClubName = $_POST['newClubName'];
+    $updateNameQuery = "UPDATE clubs SET ClubName = '$newClubName' WHERE ClubID = $clubID";
+    mysqli_query($conn, $updateNameQuery);
 
-    // Redirect back to the clubs page after editing
-    header('Location: clubs.php');
+    // Redirect back to the page after update
+    header('Location: upload.php');  // Change this to the actual name of your clubs_table.php file
     exit();
 }
 
-// Fetch the club details
-if (isset($_GET['clubID'])) {
-    $clubID = $_GET['clubID'];
-    $fetchClubQuery = "SELECT * FROM clubs WHERE ClubID = $clubID";
-    $clubResult = mysqli_query($conn, $fetchClubQuery);
-    $club = mysqli_fetch_assoc($clubResult);
-} else {
-    // If clubID is not provided, redirect to the clubs page
-    header('Location: clubs.php');
-    exit();
-}
+mysqli_close($conn);
 ?>
-
-<h2>Edit Club</h2>
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="clubID" value="<?php echo $club['ClubID']; ?>">
-    
-    <label for="newClubLogo">New Club Logo:</label>
-    <input type="file" name="newClubLogo" accept="image/*"><br>
-    
-    <label for="newClubName">New Club Name:</label>
-    <input type="text" name="newClubName" value="<?php echo $club['ClubName']; ?>"><br>
-    
-    <button type="submit" name="editClub">Save Changes</button>
-</form>
 
 </body>
 </html>
-
-<?php
-// Close the database connection
-if (isset($conn)) {
-    mysqli_close($conn);
-}
-?>

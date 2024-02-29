@@ -1,6 +1,37 @@
 <?php
 include("db.php");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteClub'])) {
+    $clubID = $_POST['clubID'];
+
+    $checkQuery = "SELECT * FROM clubofficers WHERE ClubID = $clubID";
+    $checkResult = mysqli_query($conn, $checkQuery);
+
+    if (mysqli_num_rows($checkResult) > 0) {
+        // If there are associated records, delete them first
+        $deleteOfficersQuery = "DELETE FROM clubofficers WHERE ClubID = $clubID";
+        mysqli_query($conn, $deleteOfficersQuery);
+    }
+
+    // Now, you can safely delete the club record
+    $deleteQuery = "DELETE FROM clubs WHERE ClubID = $clubID";
+    mysqli_query($conn, $deleteQuery);
+
+    // Redirect back to the page after deletion
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
+    // Handle deletion logic
+}
+
+$query = "SELECT * FROM clubs";
+$result = mysqli_query($conn, $query);
+
+// Close the database connection
+if (isset($conn)) {
+    mysqli_close($conn);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,15 +51,16 @@ include("db.php");
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
     <link rel="icon" href="https://codingbirdsonline.com/wp-content/uploads/2019/12/cropped-coding-birds-favicon-2-1-192x192.png" type="image/x-icon">
     <style>
+
         body {
             background-color: #f8f8f8;
         }
 
         .container {
-            margin-top: 50px;
+            margin-top: 1px;
             background-color: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -38,15 +70,16 @@ include("db.php");
         }
 
         #clubsTable {
+
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
         #clubsTable th, #clubsTable td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
         }
 
         #clubsTable th {
@@ -61,6 +94,27 @@ include("db.php");
         #clubsTable tbody tr:hover {
             background-color: #cce5ff;
         }
+
+		.custom-dropdown {
+            width: 120px;
+            padding: 1px;
+			align-items: center;
+			justify-content: center;
+            border-radius: 7px;
+            background-color: #3498db;
+            color: white;
+			margin: 0 auto;
+        }
+
+        .custom-dropdown select {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 3px;
+            background-color: #3498db;
+            color: white;
+        }
+		
     </style>
 </head>
 <body>
@@ -69,7 +123,7 @@ include("db.php");
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="#" class="brand">
-			<i class='bx bxs-smile'></i>
+			<i class='bx bxs-dashboard'></i>
 			<span class="text">Club management</span>
 		</a>
 		<ul class="side-menu top">
@@ -88,7 +142,7 @@ include("db.php");
 			<li>
 				<a href="clubofficials.php">
 					<i class='bx bxs-dashboard' ></i>
-					<span class="text">Club Officials</span>
+					<span class="text">Club Officers</span>
 				</a>
 			</li>
 			<li>
@@ -104,7 +158,7 @@ include("db.php");
 				</a>
 			</li>
 		</ul>
-		<!-- <ul class="side-menu">
+		<ul class="side-menu">
 			<li>
 				<a href="#">
 					<i class='bx bxs-cog' ></i>
@@ -117,13 +171,13 @@ include("db.php");
 					<span class="text">Logout</span>
 				</a>
 			</li>
-		</ul> -->
+		</ul>
 	</section>
 	<!-- SIDEBAR -->
 
 
-
 	<!-- CONTENT -->
+
 	<section id="content">
 		<!-- NAVBAR -->
 		<nav>
@@ -140,67 +194,88 @@ include("db.php");
 		<!-- NAVBAR -->
 
 		<!-- MAIN -->
-		<main>
-			<div class="head-title">
-				<div class="left">
-					<h1>Club Officers</h1>
-				</div>
-			</div>
+		<<main>
+        <div class="container">
+            <h2 style="text-align: center; color: #3498db;">Clubs List</h2>
+            <table id="clubsTable" class="table table-striped table-bordered" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Club Pictures</th>
+                        <th>Club Name</th>
+                        <th>Status</th>
+						<th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteClub'])) {
+						$clubID = $_POST['clubID'];
+					
+						$checkQuery = "SELECT * FROM clubofficers WHERE ClubID = $clubID";
+							$checkResult = mysqli_query($conn, $checkQuery);
+					
+							if (mysqli_num_rows($checkResult) > 0) {
+								// If there are associated records, delete them first
+								$deleteOfficersQuery = "DELETE FROM clubofficers WHERE ClubID = $clubID";
+								mysqli_query($conn, $deleteOfficersQuery);
+							}
+					
+							// Now, you can safely delete the club record
+							$deleteQuery = "DELETE FROM clubs WHERE ClubID = $clubID";
+							mysqli_query($conn, $deleteQuery);
+					
+							// Redirect back to the page after deletion
+							header('Location: ' . $_SERVER['PHP_SELF']);
+							exit();
+						// Handle deletion logic
+					}
+					
+					$query = "SELECT * FROM clubs";
+					$result = mysqli_query($conn, $query);
 
-			<div class="container">
-        <h2 style="text-align: center; color: #333;">Club Officers Information</h2>
-        <table id="exampleTable" class="table table-striped table-bordered" style="width: 100%">
-            <thead id="thead">
-                <tr>
-                    <th>Club ID</th>
-                    <th>Club Name</th>
-                    <th>Student ID</th>
-                    <th>Position</th>
-                    <th>Student Name</th>
-                </tr>
-            </thead>
-            <tbody id="tbody">
-                <?php
-                $sql = "SELECT clubofficers.ClubID, clubs.ClubName, clubofficers.StudentID, clubofficers.Position, clubofficers.StudentName
-                        FROM clubofficers
-                        INNER JOIN clubs ON clubofficers.ClubID = clubs.ClubID";
-
-                $result = $conn->query($sql);
-
-                if ($result->num_rows > 0) {
-					$prevClubID = '';
-                    $prevClubName = '';
-                    while ($row = $result->fetch_assoc()) {
-						
-						$clubIDDisplay = ($row["ClubID"] !== $prevClubID) ? $row["ClubID"] : '';
-                        $prevClubID = $row["ClubID"];
-
-                        $clubNameDisplay = ($row["ClubName"] !== $prevClubName) ? $row["ClubName"] : '';
-                        $prevClubName = $row["ClubName"];
-
-                        echo '<tr>
-                                <td>' . $clubIDDisplay . '</td>
-                                <td>' . $clubNameDisplay . '</td>
-                                <td>' . $row["StudentID"] . '</td>
-                                <td>' . $row["Position"] . '</td>
-                                <td>' . $row["StudentName"] . '</td>
-                              </tr>';
-                    }
-                } else {
-                    echo '<tr><td colspan="5" style="text-align: center;">No data available</td></tr>';
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $('#exampleTable').DataTable();
-        });
-    </script>
-            
-
-		</main>
+					if (mysqli_num_rows($result) > 0) {
+						echo "<table>";
+						echo "<tr><th>Club Logo</th><th>Club Name</th><th>Club Status</th><th>Action</th></tr>";
+					
+						while ($row = mysqli_fetch_assoc($result)) {
+							echo "<tr>";
+							echo "<td><img src='{$row['ClubLogo']}' alt='Club Logo' style='max-width: 50px; max-height: 50px;'></td>";
+							echo "<td>{$row['ClubName']}</td>";
+							echo "<td>";
+							echo "<select name='status'>";
+							echo "<option value='0' " . ($row['Status'] == 0 ? 'selected' : '') . ">Not Accredited</option>";
+							echo "<option value='1' " . ($row['Status'] == 1 ? 'selected' : '') . ">Accredited</option>";
+							echo "</select>";
+							echo "</td>";
+							echo "<td>";
+							echo "<form method='post' action='edit_club.php'>";
+							echo "<input type='hidden' name='clubID' value='{$row['ClubID']}'>";
+							echo "<button class='edit-btn' type='submit' name='editClub'>Edit</button>";
+							echo "</form>";
+							echo "<form method='post'>";
+							echo "<input type='hidden' name='clubID' value='{$row['ClubID']}'>";
+							echo "<button class='delete-btn' type='submit' name='deleteClub'>Delete</button>";
+							echo "</form>";
+							echo "</td>";
+							echo "</tr>";
+						}
+					
+						echo "</table>";
+					} else {
+						echo "No clubs found.";
+					}
+					
+					mysqli_close($conn);
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#clubsTable').DataTable();
+            });
+        </script>
+    </main>
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
