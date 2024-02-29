@@ -68,12 +68,13 @@ window.addEventListener('resize', function () {
 const switchMode = document.getElementById('switch-mode');
 const container = document.getElementById("container");
 
-console.table(switchMode);
+console.log("hehe");
 
 switchMode.addEventListener('change', function () {
 	if(this.checked) {
 		document.body.classList.add('dark');
 		container.classList.add("dark");
+		alert("hehehehe");
 	} else {
 		document.body.classList.remove('dark');
 		container.classList.remove("dark");

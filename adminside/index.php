@@ -163,7 +163,7 @@ include("db.php");
 		<!-- NAVBAR -->
 
 		<!-- MAIN -->
-		<<main>
+		<main>
         <div class="container">
             <h2 style="text-align: center; color: #3498db;">Clubs List</h2>
             <table id="clubsTable" class="table table-striped table-bordered" style="width: 100%">
@@ -252,10 +252,3 @@ mysqli_close($conn);
 	<script src="script.js"></script>
 </body>
 </html>
-
-<?php
-// Close the database connection
-if (isset($conn)) {
-    mysqli_close($conn);
-}
-?>
