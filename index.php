@@ -176,13 +176,13 @@ include("db.php");
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT ClubPicture, ClubName, Status FROM clubs"; // Assuming ClubPicture is the column name for pictures
+                    $sql = "SELECT ClubLogo, ClubName, Status FROM clubs"; // Assuming ClubLogo is the column name for pictures
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo '<tr>
                                     <td>
-                                        <img src="' . $row["ClubPicture"] . '" alt="Club Picture" style="max-width: 100px; max-height: 100px;">
+                                        <img src="' . $row["ClubLogo"] . '" alt="Club Picture" style="max-width: 100px; max-height: 100px;">
                                     </td>
                                     <td>' . $row["ClubName"] . '</td>
                                     <td>

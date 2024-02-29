@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2024 at 09:06 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Feb 29, 2024 at 06:07 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -83,36 +83,36 @@ INSERT INTO `clubofficers` (`ClubID`, `StudentID`, `Position`, `StudentName`) VA
 
 CREATE TABLE `clubs` (
   `ClubID` int(11) NOT NULL,
-  `ClubPicture` varchar(200) NOT NULL,
+  `ClubLogo` varchar(255) NOT NULL,
   `ClubName` varchar(255) NOT NULL,
-  `Status` varchar(200) NOT NULL
+  `Status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `clubs`
 --
 
-INSERT INTO `clubs` (`ClubID`, `ClubPicture`, `ClubName`, `Status`) VALUES
-(1, '', 'Science Club', ''),
-(2, 'uploads/club2_chess.jpg', 'Chess Club', ''),
-(3, '', 'Debate Club', ''),
-(4, '', 'Art Club', ''),
-(5, '', 'Music Clubb', ''),
-(6, '', 'Drama Club', ''),
-(7, '', 'PGITS Club', ''),
-(8, '', 'GMITS Club', ''),
-(9, '', 'PSITS Club', ''),
-(10, '', 'Robotics Club', ''),
-(11, '', 'Literature Club', ''),
-(12, '', 'Film Club', ''),
-(13, '', 'Math Club', ''),
-(14, '', 'Sports Club', ''),
-(15, '', 'Cooking Club', ''),
-(16, '', 'Astronomy Club', ''),
-(17, '', 'Dance Club', ''),
-(18, '', 'Photography Club', ''),
-(19, '', 'Volunteer Club', ''),
-(20, '', 'Foreign Language Club', '');
+INSERT INTO `clubs` (`ClubID`, `ClubLogo`, `ClubName`, `Status`) VALUES
+(1, '', 'Science Club', 0),
+(2, '', 'Chess Club', 0),
+(3, '', 'Debate Club', 0),
+(4, '', 'Art Club', 0),
+(5, '', 'Music Clubb', 0),
+(6, '', 'Drama Club', 0),
+(7, '', 'PGITS Club', 0),
+(8, '', 'GMITS Club', 0),
+(9, '', 'PSITS Club', 0),
+(10, '', 'Robotics Club', 0),
+(11, '', 'Literature Club', 0),
+(12, '', 'Film Club', 0),
+(13, '', 'Math Club', 0),
+(14, '', 'Sports Club', 0),
+(15, '', 'Cooking Club', 0),
+(16, '', 'Astronomy Club', 0),
+(17, '', 'Dance Club', 0),
+(18, '', 'Photography Club', 0),
+(19, '', 'Volunteer Club', 0),
+(20, '', 'Foreign Language Club', 0);
 
 --
 -- Indexes for dumped tables
