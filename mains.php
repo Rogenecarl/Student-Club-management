@@ -1,37 +1,6 @@
 <?php
 include("db.php");
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteClub'])) {
-    $clubID = $_POST['clubID'];
-
-    $checkQuery = "SELECT * FROM clubofficers WHERE ClubID = $clubID";
-    $checkResult = mysqli_query($conn, $checkQuery);
-
-    if (mysqli_num_rows($checkResult) > 0) {
-        // If there are associated records, delete them first
-        $deleteOfficersQuery = "DELETE FROM clubofficers WHERE ClubID = $clubID";
-        mysqli_query($conn, $deleteOfficersQuery);
-    }
-
-    // Now, you can safely delete the club record
-    $deleteQuery = "DELETE FROM clubs WHERE ClubID = $clubID";
-    mysqli_query($conn, $deleteQuery);
-
-    // Redirect back to the page after deletion
-    header('Location: ' . $_SERVER['PHP_SELF']);
-    exit();
-    // Handle deletion logic
-}
-
-$query = "SELECT * FROM clubs";
-$result = mysqli_query($conn, $query);
-
-// Close the database connection
-if (isset($conn)) {
-    mysqli_close($conn);
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -200,15 +169,16 @@ if (isset($conn)) {
             <table id="clubsTable" class="table table-striped table-bordered" style="width: 100%">
                 <thead>
                     <tr>
-                        <th>Club Pictures</th>
+                        <th>Club Logo</th>
                         <th>Club Name</th>
                         <th>Status</th>
-						<th>Actions</th>
+						<th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteClub'])) {
+
+					if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteClub'])) {
 						$clubID = $_POST['clubID'];
 					
 						$checkQuery = "SELECT * FROM clubofficers WHERE ClubID = $clubID";
@@ -224,49 +194,47 @@ if (isset($conn)) {
 							$deleteQuery = "DELETE FROM clubs WHERE ClubID = $clubID";
 							mysqli_query($conn, $deleteQuery);
 					
-							// Redirect back to the page after deletion
-							header('Location: ' . $_SERVER['PHP_SELF']);
-							exit();
-						// Handle deletion logic
 					}
 					
 					$query = "SELECT * FROM clubs";
 					$result = mysqli_query($conn, $query);
 
-					if (mysqli_num_rows($result) > 0) {
-						echo "<table>";
-						echo "<tr><th>Club Logo</th><th>Club Name</th><th>Club Status</th><th>Action</th></tr>";
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+							echo '<tr>
+							<td>
+								<img src="' . $row["ClubLogo"] . '" alt="Club Logo" style="max-width: 50px; max-height: 50px;">
+							</td>
+							<td>' . $row["ClubName"] . '</td>
+							<td>
+								<div class="custom-dropdown">
+									<select name="status">
+										<option value="0" ' . ($row["Status"] == 0 ? "selected" : "") . '>Not Accredited</option>
+										<option value="1" ' . ($row["Status"] == 1 ? "selected" : "") . '>Accredited</option>
+									</select>
+								</div>
+							</td>
+							<td> 
+								<form method="post" action="edit_club.php">
+									<input type="hidden" name="clubID" value="' . $row['ClubID'] . '">
+									<button class="edit-btn" type="submit" name="editClub">Edit</button>
+								</form>
+								<form method="post">
+									<input type="hidden" name="clubID" value="' . $row['ClubID'] . '">
+									<button class="delete-btn" type="submit" name="deleteClub">Delete</button>
+								</form>
+							</td>
+						</tr>';
 					
-						while ($row = mysqli_fetch_assoc($result)) {
-							echo "<tr>";
-							echo "<td><img src='{$row['ClubLogo']}' alt='Club Logo' style='max-width: 50px; max-height: 50px;'></td>";
-							echo "<td>{$row['ClubName']}</td>";
-							echo "<td>";
-							echo "<select name='status'>";
-							echo "<option value='0' " . ($row['Status'] == 0 ? 'selected' : '') . ">Not Accredited</option>";
-							echo "<option value='1' " . ($row['Status'] == 1 ? 'selected' : '') . ">Accredited</option>";
-							echo "</select>";
-							echo "</td>";
-							echo "<td>";
-							echo "<form method='post' action='edit_club.php'>";
-							echo "<input type='hidden' name='clubID' value='{$row['ClubID']}'>";
-							echo "<button class='edit-btn' type='submit' name='editClub'>Edit</button>";
-							echo "</form>";
-							echo "<form method='post'>";
-							echo "<input type='hidden' name='clubID' value='{$row['ClubID']}'>";
-							echo "<button class='delete-btn' type='submit' name='deleteClub'>Delete</button>";
-							echo "</form>";
-							echo "</td>";
-							echo "</tr>";
-						}
-					
-						echo "</table>";
-					} else {
-						echo "No clubs found.";
-					}
-					
-					mysqli_close($conn);
-                    ?>
+							}
+
+							echo "</table>";
+} else {
+    echo "No clubs found.";
+}
+
+mysqli_close($conn);
+?>
                 </tbody>
             </table>
         </div>

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateClub'])) {
     mysqli_query($conn, $updateNameQuery);
 
     // Redirect back to the page after update
-    header('Location: upload.php');  // Change this to the actual name of your clubs_table.php file
+    header('Location: index.php');  // Change this to the actual name of your clubs_table.php file
     exit();
 }
 
