@@ -65,6 +65,16 @@ include("db.php");
             background-color: #cce5ff;
         }
 
+        .add-clubs-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 
@@ -143,55 +153,61 @@ include("db.php");
 
         <!-- MAIN -->
         <main class="main-content">
-            <div class="container">
-                <h2 style="text-align: center; color: #3498db;" >Club Members Information</h2>
-                <table id="exampleTable" class="table table-striped table-bordered">
-                    <thead id="thead">
-                        <tr>
-                            <th>Club Logo</th>
-                            <th>Club Name</th>
-                            <th>Student ID</th>
-                            <th>Student Name</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                        <?php
-                        $sql = "SELECT clubs.ClubName, clubs.ClubLogo, clubmembers.StudentID, clubmembers.StudentName
-                                FROM clubmembers
-                                INNER JOIN clubs ON clubmembers.ClubID = clubs.ClubID";
+    <div class="container">
+        <h2 style="text-align: center; color: #3498db;">Club Members Information</h2>
+        <table id="exampleTable" class="table table-striped table-bordered">
+            <thead id="thead">
+                <tr>
+                    <th>Club Logo</th>
+                    <th>Club Name</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Actions</th> <!-- New column for Edit and Delete buttons -->
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <?php
+                    $sql = "SELECT clubs.ClubName, clubs.ClubLogo, clubmembers.StudentID, clubmembers.StudentName
+                            FROM clubmembers
+                            INNER JOIN clubs ON clubmembers.ClubID = clubs.ClubID";
 
-                        $result = $conn->query($sql);
+                    $result = $conn->query($sql);
 
-                        if ($result->num_rows > 0) {
-        $prevClubName = '';
-        while ($row = $result->fetch_assoc()) {
-            $clubLogoDisplay = $row["ClubLogo"] ? '<img src="' . $row["ClubLogo"] . '" alt="Club Logo" width="50">' : '';
-            $clubNameDisplay = ($row["ClubName"] !== $prevClubName) ? $row["ClubName"] : '';
-            $prevClubName = $row["ClubName"];
+                    if ($result->num_rows > 0) {
+                        $prevClubName = '';
+                        while ($row = $result->fetch_assoc()) {
+                            $clubLogoDisplay = $row["ClubLogo"] ? '<img src="' . $row["ClubLogo"] . '" alt="Club Logo" width="50">' : '';
+                            $clubNameDisplay = ($row["ClubName"] !== $prevClubName) ? $row["ClubName"] : '';
+                            $prevClubName = $row["ClubName"];
 
-            echo '<tr>
-                    <td>' . $clubLogoDisplay . '</td>
-                    <td>' . $clubNameDisplay . '</td>
-                    <td>' . $row["StudentID"] . '</td>
-                    <td>' . $row["StudentName"] . '</td>
-                </tr>';
-        }
-    } else {
-        echo '<tr><td colspan="4" style="text-align: center;">No data available</td></tr>';
-    }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#exampleTable').DataTable();
-                });
-            </script>
-        </main>
-        <!-- MAIN -->
-    </section>
-    <!-- CONTENT -->
+                            echo '<tr>
+                            <td>' . $clubLogoDisplay . '</td>
+                            <td>' . $clubNameDisplay . '</td>
+                            <td>' . $row["StudentID"] . '</td>
+                            <td>' . $row["StudentName"] . '</td>
+                            <td>
+                                <a href="edit_member.php?StudentID=' . $row["StudentID"] . '" class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-pencil"></i> Edit </a>
+                                <a href="delete_member.php?StudentID=' . $row["StudentID"] . '" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-trash"></i> Delete </a>
+                            </td>
+                        </tr>';
+                }
+                echo "</table>";
+                    // Add Clubs Button
+                    echo '<button style="text-align: center;" class="add-clubs-btn" onclick="location.href=\'addmembers.php\';">Add Member</button>';
+                    } else {
+                        echo '<tr><td colspan="5" style="text-align: center;">No data available</td></tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#exampleTable').DataTable();
+            });
+        </script>
+    </main>
+    <!-- MAIN -->
 
     <?php
     // Close the database connection
