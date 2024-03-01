@@ -5,93 +5,11 @@ include("db.php");
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Boxicons -->
-    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <!-- My CSS -->
-    <link rel="stylesheet" href="style.css">
-    <title>Student Club Management</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
-    <link rel="icon" href="https://codingbirdsonline.com/wp-content/uploads/2019/12/cropped-coding-birds-favicon-2-1-192x192.png" type="image/x-icon">
-    <style>
-        body {
-            background-color: #f8f8f8;
-        }
-
-        .container {
-            margin-top: 1px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #3498db; /* Header color */
-        }
-
-        #clubsTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        #clubsTable th, #clubsTable td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 2px solid #ddd;
-        }
-
-        #clubsTable th {
-            background-color: #3498db; /* Header background color */
-            color: white;
-        }
-
-        #clubsTable tbody tr:nth-child(odd) {
-            background-color: #f2f2f2;
-        }
-
-        #clubsTable tbody tr:hover {
-            background-color: #cce5ff;
-        }
-
-        .custom-dropdown {
-            width: 120px;
-            padding: 1px;
-            align-items: center;
-            justify-content: center;
-            border-radius: 7px;
-            background-color: #3498db;
-            color: white;
-            margin: 0 auto;
-        }
-
-        .custom-dropdown select {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-radius: 3px;
-            background-color: #3498db;
-            color: white;
-        }
-
-        .add-clubs-btn {
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="Styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <title>Dashboard</title>
 </head>
 <body>
 
